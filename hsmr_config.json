@@ -2,6 +2,7 @@
     "date_parameters": {
         "year": 2025,
         "quarter": 1,
+        "processing_script_run_date": "2025-06-19",
         "publication_reference_period": "2025_Q1",
         "start_date_iso": "2025-01-01",
         "end_date_iso": "2025-03-31",
@@ -59,5 +60,5 @@
             "output_filename_base": "HSMR_Summary_Report"
         }
     },
-    "config_hash": "67cffef8aeb24457e5344a8f7381fc817abcc3c7dd5806cac75fdf49b3726470"
+    "config_hash": "240d1a591942b2983172933c64cfbd97cd503d67b9efc9e3b160cc020df744f8"
 }

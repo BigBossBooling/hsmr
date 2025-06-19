@@ -24,9 +24,9 @@ verify_input_hash <- function(input_filepath, expected_hash_filepath) {
   }
   if (!file.exists(expected_hash_filepath)) {
     # For trends, some inputs might be optional or historical, so this might be a warning
-    # However, if the primary input (current SMR extract) hash is missing, it's an issue.
+    # However, if the primary input (current SMR output) hash is missing, it's an issue.
     stop(paste("Expected hash file not found for trends input:", expected_hash_filepath,
-               "This indicates an issue with Phase 2 output generation or artifact handling."))
+               "This indicates an issue with Phase 3 (SMR output) generation or artifact handling."))
   }
 
   expected_hash <- trimws(readLines(expected_hash_filepath, n = 1, warn = FALSE))
@@ -58,43 +58,49 @@ main <- function() {
 ")
 
   date_params <- config$date_parameters
-  raw_data_dir <- here::here(config$output_paths$raw_data_dir)
+  # INPUT DATA NOW COMES FROM PROCESSED_DATA_DIR
   processed_data_dir <- here::here(config$output_paths$processed_data_dir)
 
-  # Create processed data directory if it doesn't exist
   if (!dir.exists(processed_data_dir)) {
-    dir.create(processed_data_dir, recursive = TRUE)
-    cat("Created directory:", processed_data_dir, "
+    warning(paste("Processed data directory not found, though expected:", processed_data_dir))
+    dir.create(processed_data_dir, recursive = TRUE, showWarnings = FALSE)
+    cat("Created directory (or ensured it exists):", processed_data_dir, "
 ")
   }
 
   # --- Load Input Data for Trends ---
-  # For this simulation, we'll re-use the SMR extract from the current period.
-  # A real trends process would likely involve loading and appending historical trend data.
-  smr_input_filename <- paste0("smr_extract_", date_params$publication_reference_period, ".csv")
-  smr_input_filepath <- file.path(raw_data_dir, smr_input_filename)
-  smr_input_hash_filepath <- paste0(smr_input_filepath, ".sha256")
+  # NOW USING SMR OUTPUT AS THE BASE FOR CURRENT PERIOD'S TRENDS
+  current_period_input_filename <- paste0("smr_output_", date_params$publication_reference_period, ".csv")
+  current_period_input_filepath <- file.path(processed_data_dir, current_period_input_filename)
+  current_period_input_hash_filepath <- paste0(current_period_input_filepath, ".sha256")
 
-  # Verify hash of the input SMR extract (as it's being reused here)
-  verify_input_hash(smr_input_filepath, smr_input_hash_filepath)
+  verify_input_hash(current_period_input_filepath, current_period_input_hash_filepath)
 
-  # Define col_types for current_period_data_df to match create_smr_data.R and extract_database_data.R
-  col_types_spec <- readr::cols(
-      patient_id = readr::col_integer(),
-      admission_date = readr::col_date(), # Important for trends script
-      discharge_date = readr::col_date(),
-      diagnosis_code_1 = readr::col_character(),
-      discharged_alive_status = readr::col_integer()
-      # Ensure this matches the structure of the (simulated) smr_extract file
+  # Define col_types for smr_output_...csv
+  # Based on smr_model.R output, includes: patient_id, admission_date, discharge_date, diagnosis_code_1,
+  # discharged_alive_status, wrangled_indicator, age_group, comorbidity_score,
+  # predicted_mortality_prob, smr_value
+  # Ensure all columns from the smr_output placeholder/simulation are listed here.
+  col_types_spec_smr_output <- readr::cols(
+      patient_id = readr::col_integer(), # From original raw data via wrangling
+      admission_date = readr::col_date(), # From original raw data
+      discharge_date = readr::col_date(), # From original raw data
+      diagnosis_code_1 = readr::col_character(), # From original raw data
+      discharged_alive_status = readr::col_integer(), # From original raw data
+      wrangled_indicator = readr::col_logical(), # Added in smr_wrangling.R
+      age_group = readr::col_factor(levels = c("Young", "Mid", "Old")), # Added in smr_pmorbs.R
+      comorbidity_score = readr::col_integer(), # Added in smr_pmorbs.R
+      predicted_mortality_prob = readr::col_double(), # Added in smr_model.R
+      smr_value = readr::col_double() # Added in smr_model.R
+      # Any other columns passed through or created by the smr scripts should be defined
   )
-  current_period_data_df <- readr::read_csv(smr_input_filepath, col_types = col_types_spec, show_col_types = FALSE)
-  cat("Current period data for trends loaded from:", smr_input_filepath, "
+  current_period_data_df <- readr::read_csv(current_period_input_filepath, col_types = col_types_spec_smr_output, show_col_types = FALSE)
+  cat("Current period SMR output data for trends loaded from:", current_period_input_filepath, "
 ")
 
-  input_data_for_trends <- list(smr_extract_current_period = current_period_data_df)
+  input_data_for_trends <- list(smr_output_current_period = current_period_data_df)
   # In a real scenario, add historical data to this list:
   # input_data_for_trends$historical_trends <- read_csv(here::here(processed_data_dir, "historical_trends_master.csv"))
-
 
   # --- Execute Trends Calculation (Simulated) ---
   trends_output_df <- calculate_trends_data(input_data_for_trends, date_params)

@@ -1,21 +1,26 @@
 # scripts/create_excel_tables.R
 
 # Load necessary libraries
-if (!requireNamespace("jsonlite", quietly = TRUE)) install.packages("jsonlite", repos = "https://cloud.r-project.org/")
-if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr", repos = "https://cloud.r-project.org/")
-if (!requireNamespace("digest", quietly = TRUE)) install.packages("digest", repos = "https://cloud.r-project.org/")
-if (!requireNamespace("here", quietly = TRUE)) install.packages("here", repos = "https://cloud.r-project.org/")
-# For actual Excel, you'd use openxlsx or writexl
-# if (!requireNamespace("openxlsx", quietly = TRUE)) install.packages("openxlsx", repos = "https://cloud.r-project.org/")
+if (!requireNamespace("jsonlite", quietly = TRUE)) {cat("Installing jsonlite (required by create_excel_tables.R)
+"); install.packages("jsonlite", repos = "https://cloud.r-project.org/", quiet = TRUE)}
+if (!requireNamespace("readr", quietly = TRUE)) {cat("Installing readr (required by create_excel_tables.R)
+"); install.packages("readr", repos = "https://cloud.r-project.org/", quiet = TRUE)}
+if (!requireNamespace("digest", quietly = TRUE)) {cat("Installing digest (required by create_excel_tables.R)
+"); install.packages("digest", repos = "https://cloud.r-project.org/", quiet = TRUE)}
+if (!requireNamespace("here", quietly = TRUE)) {cat("Installing here (required by create_excel_tables.R)
+"); install.packages("here", repos = "https://cloud.r-project.org/", quiet = TRUE)}
+if (!requireNamespace("openxlsx", quietly = TRUE)) {cat("Installing openxlsx (required by create_excel_tables.R)
+"); install.packages("openxlsx", repos = "https://cloud.r-project.org/", quiet = TRUE)}
+
 
 library(jsonlite)
 library(readr)
 library(digest)
 library(here)
-# library(openxlsx) # For actual Excel file handling
+library(openxlsx) # For actual Excel file handling
 
 # --- Configuration ---
-config_file <- here::here("hsmr_config.json") # Assumes config is in root
+config_file <- here::here("hsmr_config.json")
 
 # --- Helper Function for Hash Verification ---
 verify_input_hash <- function(input_filepath, expected_hash_filepath, file_description = "Input file") {
@@ -23,19 +28,15 @@ verify_input_hash <- function(input_filepath, expected_hash_filepath, file_descr
     stop(paste(file_description, "not found:", input_filepath))
   }
   if (!file.exists(expected_hash_filepath)) {
-    # For this script, inputs are expected to have hashes from previous processing steps
     stop(paste("Expected hash file not found for", file_description, ":", expected_hash_filepath,
                 "This indicates an issue with prior data processing or artifact handling."))
   }
-
   expected_hash <- trimws(readLines(expected_hash_filepath, n = 1, warn = FALSE))
   calculated_hash <- digest::digest(input_filepath, algo = "sha256", file = TRUE)
-
   if (calculated_hash != expected_hash) {
     stop(paste("Hash mismatch for", file_description, ":", input_filepath,
                "
-  Expected:", expected_hash,
-               "
+  Expected:", expected_hash, "
   Actual  :", calculated_hash))
   }
   cat("Input file hash verified for:", file_description, "(", input_filepath, ")
@@ -45,42 +46,53 @@ verify_input_hash <- function(input_filepath, expected_hash_filepath, file_descr
 
 # --- Main Function ---
 main <- function() {
-  cat("Starting Excel tables generation process (simulated with CSV)...
+  cat("Starting Excel tables generation process...
 ")
 
-  # Load configuration
-  if (!file.exists(config_file)) {
-    stop("hsmr_config.json not found! It should be available from previous GHA steps.")
+  if (!requireNamespace("openxlsx", quietly = TRUE)) {
+      # This check is more of a fallback; GHA should have installed it.
+      # If it's still not found, then there's a fundamental env issue.
+      cat("CRITICAL ERROR: openxlsx package is not available even after attempting install. Cannot generate real Excel file.
+")
+      stop("openxlsx package is required but not installed/loadable. Please update R environment dependencies.")
   }
+
+
   config <- jsonlite::read_json(config_file)
   cat("Configuration loaded successfully for table generation.
 ")
 
   date_params <- config$date_parameters
   processed_data_dir <- here::here(config$output_paths$processed_data_dir)
-  final_output_dir <- here::here(config$output_paths$final_output_dir) # Using 'final_output_dir' from config
+  final_output_dir <- here::here(config$output_paths$final_output_dir)
 
-  # Create final output directory if it doesn't exist
   if (!dir.exists(final_output_dir)) {
     dir.create(final_output_dir, recursive = TRUE)
     cat("Created directory:", final_output_dir, "
 ")
   }
 
-  # --- Load Processed Data ---
+  # Load Processed Data (SMR and Trends)
   smr_output_filename <- paste0("smr_output_", date_params$publication_reference_period, ".csv")
   smr_output_filepath <- file.path(processed_data_dir, smr_output_filename)
   smr_output_hash_filepath <- paste0(smr_output_filepath, ".sha256")
   verify_input_hash(smr_output_filepath, smr_output_hash_filepath, "SMR output data")
 
-  col_types_smr <- readr::cols( # Define to handle placeholder empty files gracefully
-      .default = readr::col_guess() # Keep default guessing for most
-      # Ensure specific columns from smr_model_output_df are correctly typed if known
-      # For example, if 'smr_value' is critical and numeric:
-      # smr_value = readr::col_double()
+  # Define col_types for smr_output_...csv to handle placeholders correctly
+  col_types_smr <- readr::cols(
+      patient_id = readr::col_integer(),
+      admission_date = readr::col_date(),
+      discharge_date = readr::col_date(),
+      diagnosis_code_1 = readr::col_character(),
+      discharged_alive_status = readr::col_integer(),
+      wrangled_indicator = readr::col_logical(),
+      age_group = readr::col_factor(levels = c("Young", "Mid", "Old")),
+      comorbidity_score = readr::col_integer(),
+      predicted_mortality_prob = readr::col_double(),
+      smr_value = readr::col_double()
   )
   smr_data_df <- readr::read_csv(smr_output_filepath, col_types = col_types_smr, show_col_types = FALSE)
-  cat("SMR output data loaded from:", smr_output_filepath, "
+  cat("SMR output data loaded from:", smr_output_filepath, " (Rows: ", nrow(smr_data_df), ")
 ")
 
   trends_output_filename <- paste0("trends_output_", date_params$publication_reference_period, ".csv")
@@ -88,76 +100,57 @@ main <- function() {
   trends_output_hash_filepath <- paste0(trends_output_filepath, ".sha256")
   verify_input_hash(trends_output_filepath, trends_output_hash_filepath, "Trends output data")
 
-  col_types_trends <- readr::cols( # Define to handle placeholder empty files
+  col_types_trends <- readr::cols(
       time_period = readr::col_character(),
       total_admissions = readr::col_integer(),
       total_deaths = readr::col_integer(),
       crude_mortality_rate = readr::col_double()
   )
   trends_data_df <- readr::read_csv(trends_output_filepath, col_types = col_types_trends, show_col_types = FALSE)
-  cat("Trends output data loaded from:", trends_output_filepath, "
+  cat("Trends output data loaded from:", trends_output_filepath, " (Rows: ", nrow(trends_data_df), ")
 ")
 
-  # --- Load Template (CSV Template for Simulation) ---
-  template_entry <- Filter(function(x) x$name == "hsmr_report_template.csv" && x$type == "template", config$reference_file_manifest)
-  if (length(template_entry) == 0 || length(template_entry[[1]]$path) == 0) {
-    stop("HSMR report template 'hsmr_report_template.csv' with type 'template' not found in config manifest or path is empty.")
-  }
-  template_path_from_config <- template_entry[[1]]$path
-  template_filepath <- here::here(template_path_from_config)
-
-  # Hash for template should have been verified by verify_reference_files.R in Phase 2.
-  # We can re-verify here by extracting the expected hash from config for this specific template.
-  template_expected_hash <- template_entry[[1]]$expected_hash
-  # Create a dummy hash file path for the helper, or pass hash directly if helper is modified
-  # For now, we'll assume verify_reference_files.R did its job.
-  cat("Using template (CSV for simulation):", template_filepath, " (Integrity assumed from Phase 2 verification)
-")
-
-  if (!file.exists(template_filepath)) {
-      stop(paste("Template file not found:", template_filepath))
-  }
-  template_lines <- readLines(template_filepath, warn = FALSE)
-
-
-  # --- Simulate Populating Template and Save Output ---
-  # For simulation with CSV, we'll create a single CSV output file.
-  # A real Excel process would involve writing to different sheets, formatting, etc.
-
-  # Using .xlsx extension for the output file as per original plan, even if content is CSV for simulation
+  # --- Generate Real Excel File ---
   final_tables_filename <- paste0("final_hsmr_tables_", date_params$publication_reference_period, ".xlsx")
   final_tables_filepath <- file.path(final_output_dir, final_tables_filename)
 
-  # Start with template header (simulating different "sheets" or tables)
-  writeLines(c("--- Template Introduction ---"), final_tables_filepath) # Simulate a section
-  writeLines(template_lines, final_tables_filepath, sep="
-") # Write template content
+  wb <- openxlsx::createWorkbook()
 
-  # Append SMR data (simulated - actual Excel would place this in a specific sheet/location)
-  cat("
-
---- SMR Data ---
-", file = final_tables_filepath, append = TRUE)
-  # write header of smr_data_df only if it has rows
-  if(nrow(smr_data_df) > 0) {
-      write.table(smr_data_df, final_tables_filepath, sep = ",", row.names = FALSE, col.names = TRUE, append = TRUE, quote = TRUE)
+  # SMR Data Sheet
+  openxlsx::addWorksheet(wb, "SMR_Data")
+  openxlsx::writeData(wb, sheet = "SMR_Data", x = paste("SMR Data for Period:", date_params$publication_reference_period), startCol = 1, startRow = 1)
+  # Check if smr_data_df has columns before trying to write it, to avoid error with 0-col df
+  if (ncol(smr_data_df) > 0) {
+    openxlsx::writeData(wb, sheet = "SMR_Data", x = smr_data_df, startCol = 1, startRow = 3,
+                        headerStyle = openxlsx::createStyle(textDecoration = "bold"), borders = "all")
+    openxlsx::setColWidths(wb, sheet = "SMR_Data", cols = 1:ncol(smr_data_df), widths = "auto")
   } else {
-      write(names(smr_data_df), file=final_tables_filepath, ncolumns=length(names(smr_data_df)), append=TRUE, sep=",") # just header
+    openxlsx::writeData(wb, sheet = "SMR_Data", x = "SMR data is empty or has no columns.", startCol = 1, startRow = 3)
   }
 
-  # Append Trends data (simulated)
-  cat("
-
---- Trends Data ---
-", file = final_tables_filepath, append = TRUE)
-  if(nrow(trends_data_df) > 0) {
-      write.table(trends_data_df, final_tables_filepath, sep = ",", row.names = FALSE, col.names = TRUE, append = TRUE, quote = TRUE)
+  # Trends Data Sheet
+  openxlsx::addWorksheet(wb, "Trends_Data")
+  openxlsx::writeData(wb, sheet = "Trends_Data", x = paste("Trends Data for Period:", date_params$publication_reference_period), startCol = 1, startRow = 1)
+  if (ncol(trends_data_df) > 0) {
+    openxlsx::writeData(wb, sheet = "Trends_Data", x = trends_data_df, startCol = 1, startRow = 3,
+                        headerStyle = openxlsx::createStyle(textDecoration = "bold"), borders = "all")
+    openxlsx::setColWidths(wb, sheet = "Trends_Data", cols = 1:ncol(trends_data_df), widths = "auto")
   } else {
-      write(names(trends_data_df), file=final_tables_filepath, ncolumns=length(names(trends_data_df)), append=TRUE, sep=",") # just header
+     openxlsx::writeData(wb, sheet = "Trends_Data", x = "Trends data is empty or has no columns.", startCol = 1, startRow = 3)
   }
 
-  cat("Simulated Excel tables (as structured CSV content) saved to:", final_tables_filepath, "
+
+  cat("Attempting to save real Excel workbook to:", final_tables_filepath, "
 ")
+  tryCatch({
+    openxlsx::saveWorkbook(wb, final_tables_filepath, overwrite = TRUE)
+    cat("Real Excel workbook saved successfully to:", final_tables_filepath, "
+")
+  }, error = function(e) {
+    cat("ERROR saving Excel workbook:", e$message, "
+")
+    stop(paste("Failed to save Excel workbook:", e$message))
+  })
 
   # Calculate and save SHA256 hash of the final output file
   output_hash <- digest::digest(final_tables_filepath, algo = "sha256", file = TRUE)
@@ -167,7 +160,7 @@ main <- function() {
 ")
 
   cat("
-Excel tables generation process completed (simulated with CSV content in .xlsx file).
+Excel tables generation process completed.
 ")
 }
 
@@ -177,5 +170,5 @@ tryCatch({
 }, error = function(e) {
   cat("Error in create_excel_tables.R: ", e$message, "
 ")
-  stop(e) # Re-throw error to fail GHA step
+  stop(e)
 })

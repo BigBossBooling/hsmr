@@ -1,0 +1,158 @@
+[
+    {
+        "source": "hsmr_config.json",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/hsmr_config.json",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/raw/smr_extract_2025_Q1.csv",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/raw_data/smr_extract_2025_Q1.csv",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/raw/smr_extract_2025_Q1.csv.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/raw_data/smr_extract_2025_Q1.csv.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/processed/trends_output_2025_Q1.csv.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/processed_data/trends_output_2025_Q1.csv.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/processed/smr_output_2025_Q1.csv",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/processed_data/smr_output_2025_Q1.csv",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/processed/trends_output_2025_Q1.csv",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/processed_data/trends_output_2025_Q1.csv",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/processed/smr_output_2025_Q1.csv.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/processed_data/smr_output_2025_Q1.csv.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/output/final_hsmr_tables_2025_Q1.xlsx",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/final_output_tables/final_hsmr_tables_2025_Q1.xlsx",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/output/open_data_hsmr_2025_Q1.csv",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/final_output_tables/open_data_hsmr_2025_Q1.csv",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/output/open_data_hsmr_2025_Q1.csv.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/final_output_tables/open_data_hsmr_2025_Q1.csv.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data/output/final_hsmr_tables_2025_Q1.xlsx.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/final_output_tables/final_hsmr_tables_2025_Q1.xlsx.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/MANUAL_FINALIZATION_CHECKLIST_2025_Q1.txt",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/MANUAL_FINALIZATION_CHECKLIST_2025_Q1.txt",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Summary_Report_2025_Q1.html.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Summary_Report_2025_Q1.html.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Main_Report_2025_Q1.html.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Main_Report_2025_Q1.html.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Main_Report_2025_Q1.pdf",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Main_Report_2025_Q1.pdf",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Main_Report_2025_Q1.pdf.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Main_Report_2025_Q1.pdf.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/MANUAL_FINALIZATION_CHECKLIST_2025_Q1.txt.sha256",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/MANUAL_FINALIZATION_CHECKLIST_2025_Q1.txt.sha256",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Main_Report_2025_Q1.html",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Main_Report_2025_Q1.html",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "publication_outputs/HSMR_Summary_Report_2025_Q1.html",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/publication_documents/HSMR_Summary_Report_2025_Q1.html",
+        "hash_status": "VERIFIED",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "schema_validation_report.json",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/qa_reports/schema_validation_report.json",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "data_rules_validation_report.json",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/qa_reports/data_rules_validation_report.json",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "anomaly_detection_report.json",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/qa_reports/anomaly_detection_report.json",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/source_rmds/PHS-ACCREDITED-STATS-SUMMARY.Rmd",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "markdown/HSMR_Summary_Report.Rmd",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/source_rmds/HSMR_Summary_Report.Rmd",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "markdown/PHS-ACCREDITED-STATS-REPORT.Rmd",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/source_rmds/PHS-ACCREDITED-STATS-REPORT.Rmd",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    },
+    {
+        "source": "markdown/HSMR_Main_Report.Rmd",
+        "archived_to": "s3://dummy-hsmr-archive-bucket/archive/2025/HSMR_2025_Q1/source_rmds/HSMR_Main_Report.Rmd",
+        "hash_status": "not_applicable",
+        "upload_status": "FAILED"
+    }
+]

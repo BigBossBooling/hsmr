@@ -1,10 +1,1 @@
-{
-    "smr_output": {
-        "status": "PASSED",
-        "file": "data/processed/smr_output_2025_Q1.csv"
-    },
-    "trends_output": {
-        "status": "PASSED",
-        "file": "data/processed/trends_output_2025_Q1.csv"
-    }
-}
+{"status":"PASSED"}

@@ -5,92 +5,82 @@ calculate_trends_data <- function(input_data_list, date_params) {
   cat("Calculating trends data (simulated)...
 ")
 
-  # Example: Assume input_data_list contains a dataframe named 'smr_extract'
-  # This is a simplistic simulation. Real trends might need more complex data aggregation
-  # across multiple time periods, which would require loading historical data.
-
-  raw_data_df <- NULL
-  if (!is.null(input_data_list$smr_extract_current_period)) {
-    raw_data_df <- input_data_list$smr_extract_current_period
-    cat("Using 'smr_extract_current_period' for trends simulation. Dims:", paste(dim(raw_data_df), collapse = "x"), "
+  current_period_df <- NULL
+  # EXPECTING SMR OUTPUT DATA NOW under key 'smr_output_current_period'
+  if (!is.null(input_data_list$smr_output_current_period)) {
+    current_period_df <- input_data_list$smr_output_current_period
+    cat("Using 'smr_output_current_period' for trends simulation. Dims:", paste(dim(current_period_df), collapse = "x"), "
 ")
   } else {
-    cat("Warning: 'smr_extract_current_period' not found in input_data_list for trends simulation.
+    cat("Warning: 'smr_output_current_period' not found in input_data_list for trends simulation.
 ")
   }
 
-  if (!is.null(raw_data_df) && nrow(raw_data_df) > 0 && "admission_date" %in% names(raw_data_df) && "discharged_alive_status" %in% names(raw_data_df)) {
-    # Simulate some trend calculation, e.g., monthly admissions and crude mortality rate for the current period
-    # For true long-term trends, this would need to aggregate historical data.
-    # Here, we'll just simulate based on the provided data for simplicity.
+  # Check for essential columns: admission_date, discharged_alive_status
+  # These are assumed to be present in smr_output_...csv based on its col_types definition
+  # in create_trends_data.R
+  if (!is.null(current_period_df) && nrow(current_period_df) > 0 &&
+      "admission_date" %in% names(current_period_df) &&
+      "discharged_alive_status" %in% names(current_period_df)) {
 
-    # Ensure admission_date is Date type
-    if(!inherits(raw_data_df$admission_date, "Date")){
-        # Attempt to convert, assuming it might be character or numeric origin from epoch
-        converted_date <- try(as.Date(raw_data_df$admission_date, origin = "1970-01-01"), silent = TRUE)
-        if (inherits(converted_date, "try-error") || all(is.na(converted_date))) {
-            # Fallback or specific format if known, e.g. from read_csv
-            converted_date <- try(as.Date(raw_data_df$admission_date), silent = TRUE)
-        }
+    # Ensure admission_date is Date type (col_types in read_csv should handle this)
+    if(!inherits(current_period_df$admission_date, "Date")){
+        cat("Warning: admission_date in smr_output was not read as Date type by main script. Attempting conversion for trends.
+")
+        # Attempt conversion, assuming it could be character or numeric (days from epoch)
+        converted_date <- tryCatch(
+            as.Date(current_period_df$admission_date, origin = "1970-01-01"), # Common for numeric
+            error = function(e1) {
+                tryCatch(as.Date(current_period_df$admission_date), # Try direct conversion for YYYY-MM-DD strings
+                         error = function(e2) NULL) # Return NULL if both fail
+            }
+        )
         if (inherits(converted_date, "Date") && !all(is.na(converted_date))) {
-            raw_data_df$admission_date <- converted_date
+            current_period_df$admission_date <- converted_date
         } else {
-            cat("Warning: Could not reliably convert admission_date to Date type. Trend calculation might be affected.
+            cat("CRITICAL Warning: Could not reliably convert admission_date to Date type in create_trends.R. Trend calculation will be affected.
 ")
         }
     }
 
-    # Create a year-month column, handle potential NA dates from conversion
-    if(inherits(raw_data_df$admission_date, "Date")) {
-        raw_data_df$year_month <- format(raw_data_df$admission_date, "%Y-%m")
-
-        # Aggregate data - this is a very simplified example
-        unique_year_months <- unique(raw_data_df$year_month[!is.na(raw_data_df$year_month)])
+    if(inherits(current_period_df$admission_date, "Date") && any(!is.na(current_period_df$admission_date))) { # Proceed if any valid dates
+        current_period_df$year_month <- format(current_period_df$admission_date, "%Y-%m")
+        unique_year_months <- unique(current_period_df$year_month[!is.na(current_period_df$year_month)])
 
         if(length(unique_year_months) > 0) {
             trends_list <- lapply(unique_year_months, function(ym) {
-                subset_df <- raw_data_df[which(raw_data_df$year_month == ym & !is.na(raw_data_df$year_month)),]
-                total_admissions <- nrow(subset_df)
-                total_deaths <- sum(subset_df$discharged_alive_status == 0, na.rm = TRUE)
+                subset_df <- current_period_df[which(current_period_df$year_month == ym & !is.na(current_period_df$year_month)),]
                 data.frame(
                     time_period = ym,
-                    total_admissions = total_admissions,
-                    total_deaths = total_deaths,
+                    total_admissions = nrow(subset_df), # Using nrow as a proxy for admissions from SMR output
+                    # Assuming 'discharged_alive_status == 0' means death for this simulation
+                    total_deaths = sum(subset_df$discharged_alive_status == 0, na.rm = TRUE),
                     stringsAsFactors = FALSE
                 )
             })
             trends_df <- do.call(rbind, trends_list)
-            trends_df$crude_mortality_rate <- ifelse(trends_df$total_admissions > 0, trends_df$total_deaths / trends_df$total_admissions, 0)
+            # Ensure total_admissions is not zero before division
+            trends_df$crude_mortality_rate <- ifelse(trends_df$total_admissions > 0,
+                                                     trends_df$total_deaths / trends_df$total_admissions,
+                                                     NA_real_) # Use NA if no admissions
             trends_df <- trends_df[order(trends_df$time_period),]
-        } else {
-             trends_df <- data.frame(
-                time_period = character(),
-                total_admissions = integer(),
-                total_deaths = integer(),
-                crude_mortality_rate = numeric()
-            )
+        } else { # No valid year_months to aggregate
+             trends_df <- data.frame( time_period = character(), total_admissions = integer(),
+                                     total_deaths = integer(), crude_mortality_rate = numeric())
+             cat("Warning: No valid year_month data found for aggregation in trends.
+")
         }
-
-    } else { # If admission_date is not Date, create empty trends_df
-        trends_df <- data.frame(
-          time_period = character(),
-          total_admissions = integer(),
-          total_deaths = integer(),
-          crude_mortality_rate = numeric()
-        )
-        cat("Warning: admission_date column not in Date format, cannot calculate monthly trends.
+    } else { # admission_date column is not Date type or all NA
+        trends_df <- data.frame( time_period = character(), total_admissions = integer(),
+                                 total_deaths = integer(), crude_mortality_rate = numeric())
+        cat("Warning: admission_date column not in Date format or all NA after load, cannot calculate monthly trends.
 ")
     }
-
   } else {
-    cat("Simulating empty trends data output due to missing inputs, columns, or zero rows.
+    cat("Simulating empty trends data output due to missing inputs (smr_output_current_period), required columns (admission_date, discharged_alive_status), or zero rows from SMR output.
 ")
-    trends_df <- data.frame(
-      time_period = character(),
-      total_admissions = integer(),
-      total_deaths = integer(),
-      crude_mortality_rate = numeric()
-    )
+    trends_df <- data.frame( time_period = character(), total_admissions = integer(),
+                             total_deaths = integer(), crude_mortality_rate = numeric())
   }
 
   cat("Trends calculation completed (simulated).
