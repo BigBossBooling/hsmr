@@ -1,3 +1,9 @@
+# R user library
+r_user_libs/
+
+# Workspace directory (if created at root)
+hsmr_workspace/
+
 .Rproj.user
 .Rhistory
 .RData

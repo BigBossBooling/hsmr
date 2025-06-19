@@ -79,7 +79,7 @@ Sys.umask("006")
 # ADVANCE PREVIOUS PUBLICATION DATE BY THREE MONTHS.
 # For example, the 8 August 2023 publication had an end_date of 31032023
 
-end_date <- lubridate::dmy(31122023) 
+end_date <- lubridate::dmy(31032025)
 
 # 1) start_date is the beginning of the baseline period/extract window 
 #   (one day less than 3 years prior to end_date)
@@ -142,7 +142,13 @@ hospitals <- bind_rows(read_csv(paste0(
   tibble(location = "S08000032", location_name = "NHS Lanarkshire"))
 
 # Specialty Groupings lookup
-specialty_group <- readRDS(here("reference_files", "discovery_spec_grps.rds"))
+lookup_file_path <- here("reference_files", "discovery_spec_grps.rds")
+if (!file.exists(lookup_file_path)) {
+  stop(paste("CRITICAL ERROR: Lookup file not found:", lookup_file_path,
+             "\nPlease ensure 'reference_files/discovery_spec_grps.rds' exists."))
+}
+message(paste("Lookup file found, loading:", lookup_file_path))
+specialty_group <- readRDS(lookup_file_path)
 
 ## 6 - Select locations to be included in excel tables/dashboard files ----
 

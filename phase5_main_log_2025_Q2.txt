@@ -1,0 +1,119 @@
+[2025-06-19T02:07:17Z] [SYSTEM] Initializing Phase 5 log file: phase5_main_log_2025_Q2.txt
+[2025-06-19T02:07:17Z] [SYSTEM] ========= Starting Phase 5: Publication Document Generation & Finalization (Simulated) =========
+[2025-06-19T02:07:17Z] [INFO] Executing 5.1 Markdown Document Knitting (Simulated)...
+=== Starting 5.1: Markdown Document Knitting (Simulated) ===
+[AUDIT] Verifying hashes of input data files (from Phase 4)...
+  - [PASS] Hash for data/processed/smr_output_2025_Q2.csv matches.
+  - [PASS] Hash for data/processed/trends_output_2025_Q2.csv matches.
+  - [PASS] Hash for data/output/open_data_hsmr_2025_Q2.csv matches.
+  - [PASS] Hash for data/output/final_hsmr_tables_2025_Q2.xlsx matches.
+[AUDIT] All input data hashes verified successfully.
+
+[PROCESS] Simulating R Markdown knitting...
+  - Simulating knitting for: markdown/PHS-ACCREDITED-STATS-REPORT.Rmd
+    - Rmd file hash: 6aa5e57d732f01e5bab8ac76a124f0fc5228569e3d660554cf4468b3cf2b0d5f (for audit)
+    - (Conceptually) Uses input data like: data/processed/smr_output_2025_Q2.csv, etc.
+    - Created placeholder PDF: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf
+    - Created placeholder HTML: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html
+    - PDF Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (saved to publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf.sha256)
+    - HTML Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (saved to publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html.sha256)
+  - Finished simulated knitting for markdown/PHS-ACCREDITED-STATS-REPORT.Rmd.
+  - Simulating knitting for: markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd
+    - Rmd file hash: f9a2126d6fcbd6edb63ff3d0842d42c2ceba870dfe39998186a598ae3ac1aba5 (for audit)
+    - (Conceptually) Uses input data like: data/processed/smr_output_2025_Q2.csv, etc.
+    - Created placeholder PDF: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf
+    - Created placeholder HTML: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html
+    - PDF Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (saved to publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf.sha256)
+    - HTML Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (saved to publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html.sha256)
+  - Finished simulated knitting for markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd.
+
+[SUMMARY] Simulated R Markdown Knitting Summary:
+  - Log file: knitting_log_2025_Q2.txt
+  - Placeholder documents created in: publication_outputs/
+=== 5.1: Markdown Document Knitting (Simulated) Complete ===
+[2025-06-19T02:07:17Z] [INFO] 5.1 Markdown Document Knitting (Simulated) completed.
+[2025-06-19T02:07:17Z] [INFO] ---------------------------------------------------------------------
+[2025-06-19T02:07:17Z] [INFO] Starting 5.2 Manual Finalization Reporting...
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED] The following documents have been generated (as placeholders):
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   - Main Report PDF: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf (Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855)
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   - Main Report HTML: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html (Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855)
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   - Summary PDF: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf (Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855)
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   - Summary HTML: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html (Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855)
+
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED] Please perform the following MANUAL finalization steps based on 'National Statistics Publication Templates repository readme':
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   1. Add official PHS cover page to PDF documents.
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   2. Verify/regenerate Table of Contents for PDF documents.
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   3. Review all tables and charts for correct formatting and accessibility.
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   4. Check for consistent branding and statistical disclosure control.
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   5. Perform a final read-through for clarity, grammar, and any textual errors.
+[2025-06-19T02:07:17Z] [USER_ACTION_REQUIRED]   6. Confirm all links in HTML documents are working.
+
+[2025-06-19T02:07:17Z] [INFO] For this simulation, we assume manual steps are noted and will be handled outside the script.
+[2025-06-19T02:07:17Z] [INFO] In a more advanced workflow, the pipeline might pause here for explicit human confirmation.
+[2025-06-19T02:07:17Z] [INFO] 5.2 Manual Finalization Reporting completed.
+[2025-06-19T02:07:17Z] [INFO] ---------------------------------------------------------------------
+[2025-06-19T02:07:17Z] [INFO] Executing 5.3 Output Archiving & Distribution Preparation (Simulated)...
+=== Starting 5.3: Output Archiving & Distribution Preparation (Simulated) ===
+[SETUP] Conceptual archive directory for this run: /mnt/hsmr_archive/2025/HSMR_2025_Q2
+        (Simulating mkdir -p /mnt/hsmr_archive/2025/HSMR_2025_Q2)
+[SETUP] Conceptual Tableau staging directory: /mnt/tableau_staging/hsmr
+        (Simulating mkdir -p /mnt/tableau_staging/hsmr)
+
+[PROCESS] Archiving files to /mnt/hsmr_archive/2025/HSMR_2025_Q2 (Simulated)...
+Preparing to archive: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf
+  - [PASS] Hash verified for publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf.
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.pdf.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html
+  - [PASS] Hash verified for publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html.
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-REPORT_2025_Q2.html.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf
+  - [PASS] Hash verified for publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf.
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.pdf.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html
+  - [PASS] Hash verified for publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html.
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "publication_outputs/PHS-ACCREDITED-STATS-SUMMARY_2025_Q2.html.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: data/processed/smr_output_2025_Q2.csv
+  - [PASS] Hash verified for data/processed/smr_output_2025_Q2.csv.
+  (Simulating) cp "data/processed/smr_output_2025_Q2.csv" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "data/processed/smr_output_2025_Q2.csv.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: data/processed/trends_output_2025_Q2.csv
+  - [PASS] Hash verified for data/processed/trends_output_2025_Q2.csv.
+  (Simulating) cp "data/processed/trends_output_2025_Q2.csv" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "data/processed/trends_output_2025_Q2.csv.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: data/output/open_data_hsmr_2025_Q2.csv
+  - [PASS] Hash verified for data/output/open_data_hsmr_2025_Q2.csv.
+  (Simulating) cp "data/output/open_data_hsmr_2025_Q2.csv" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "data/output/open_data_hsmr_2025_Q2.csv.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: data/output/final_hsmr_tables_2025_Q2.xlsx
+  - [PASS] Hash verified for data/output/final_hsmr_tables_2025_Q2.xlsx.
+  (Simulating) cp "data/output/final_hsmr_tables_2025_Q2.xlsx" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+  (Simulating) cp "data/output/final_hsmr_tables_2025_Q2.xlsx.sha256" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: markdown/PHS-ACCREDITED-STATS-REPORT.Rmd
+[WARN] Hash file not found for markdown/PHS-ACCREDITED-STATS-REPORT.Rmd. Cannot verify integrity before archiving.
+  (Simulating) cp "markdown/PHS-ACCREDITED-STATS-REPORT.Rmd" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd
+[WARN] Hash file not found for markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd. Cannot verify integrity before archiving.
+  (Simulating) cp "markdown/PHS-ACCREDITED-STATS-SUMMARY.Rmd" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: validation_summary_report_2025_Q2.txt
+[WARN] Hash file not found for validation_summary_report_2025_Q2.txt. Cannot verify integrity before archiving.
+  (Simulating) cp "validation_summary_report_2025_Q2.txt" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+Preparing to archive: knitting_log_2025_Q2.txt
+[WARN] Hash file not found for knitting_log_2025_Q2.txt. Cannot verify integrity before archiving.
+  (Simulating) cp "knitting_log_2025_Q2.txt" "/mnt/hsmr_archive/2025/HSMR_2025_Q2/"
+[SUCCESS] All specified files (conceptually) archived.
+
+[PROCESS] Staging files for Tableau at /mnt/tableau_staging/hsmr (Simulated)...
+Preparing to stage for Tableau: data/output/open_data_hsmr_2025_Q2.csv
+  - [PASS] Hash verified for data/output/open_data_hsmr_2025_Q2.csv.
+  (Simulating) cp "data/output/open_data_hsmr_2025_Q2.csv" "/mnt/tableau_staging/hsmr/open_data_hsmr_2025_Q2_2025_Q2.csv"
+[SUCCESS] All specified files (conceptually) staged for Tableau.
+
+=== 5.3: Output Archiving & Distribution Preparation (Simulated) Complete ===
+[2025-06-19T02:07:17Z] [INFO] 5.3 Output Archiving & Distribution Preparation (Simulated) completed.
+[2025-06-19T02:07:17Z] [INFO] ---------------------------------------------------------------------
+[2025-06-19T02:07:17Z] [SYSTEM] ========= Phase 5: Publication Document Generation & Finalization (Simulated) Complete =========
+[2025-06-19T02:07:17Z] [SYSTEM] Main log for Phase 5: phase5_main_log_2025_Q2.txt
