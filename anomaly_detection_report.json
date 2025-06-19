@@ -1,0 +1,14 @@
+{
+    "smr_output": {
+        "status": "COMPLETED",
+        "file": "data/processed/smr_output_2025_Q1.csv",
+        "detected_anomalies_count": 0,
+        "detected_anomalies_details": "None"
+    },
+    "trends_output": {
+        "status": "COMPLETED",
+        "file": "data/processed/trends_output_2025_Q1.csv",
+        "detected_anomalies_count": 0,
+        "detected_anomalies_details": "None"
+    }
+}

@@ -1,0 +1,9 @@
+SheetName,Cell,Content
+SMR_Data_Summary,A1,"Table 1: SMR Results for Period YYYY QN"
+SMR_Data_Summary,A3,"Hospital"
+SMR_Data_Summary,B3,"SMR"
+SMR_Data_Summary,C3,"Lower CI"
+SMR_Data_Summary,D3,"Upper CI"
+Trends_Data_Summary,A1,"Table 2: Trends Data for Period YYYY QN"
+Trends_Data_Summary,A3,"Time Period"
+Trends_Data_Summary,B3,"Mortality Rate"

@@ -1,1 +1,63 @@
-{}
+{
+    "date_parameters": {
+        "year": 2025,
+        "quarter": 1,
+        "publication_reference_period": "2025_Q1",
+        "start_date_iso": "2025-01-01",
+        "end_date_iso": "2025-03-31",
+        "end_date_dmy": "31032025",
+        "conceptual_actual_publication_date_iso": "2025-06-15",
+        "conceptual_submission_deadline_date_iso": "2025-05-15"
+    },
+    "database_config": {
+        "db_server_placeholder": "your_server_name_or_DSN_env_var",
+        "db_name_placeholder": "your_database_name_env_var"
+    },
+    "reference_file_manifest": [
+        {
+            "name": "lookup_hospital_codes.csv",
+            "path": "reference_files/lookup_hospital_codes.csv",
+            "expected_hash": "f1431cfcb6d782e2d2b891df259cca29ef3884b9e1018452c82175027bd68c7a"
+        },
+        {
+            "name": "lookup_diagnosis_groups.csv",
+            "path": "reference_files/lookup_diagnosis_groups.csv",
+            "expected_hash": "75c4ab3555471ed7da76b4afdd88af9d9490fc58bc75f52431da19219329a8cc"
+        },
+        {
+            "name": "hsmr_report_template.csv",
+            "path": "reference_files/templates/hsmr_report_template.csv",
+            "expected_hash": "efc8373e671e5d5fc2be008cd07e44bc6ba689f6106ceb70f9a86120084af270",
+            "type": "template"
+        }
+    ],
+    "output_paths": {
+        "raw_data_dir": "data/raw",
+        "processed_data_dir": "data/processed",
+        "final_output_dir": "data/output",
+        "publication_outputs_dir": "publication_outputs",
+        "archive_dir_template": "archive/{year}/HSMR_{year}_Q{quarter}"
+    },
+    "schema_definitions": {
+        "smr_output_schema": "schemas/smr_output_schema.json",
+        "trends_output_schema": "schemas/trends_output_schema.json"
+    },
+    "rmd_files_config": {
+        "main_report": {
+            "rmd_path": "markdown/HSMR_Main_Report.Rmd",
+            "output_formats": [
+                "html_document",
+                "pdf_document"
+            ],
+            "output_filename_base": "HSMR_Main_Report"
+        },
+        "summary_report": {
+            "rmd_path": "markdown/HSMR_Summary_Report.Rmd",
+            "output_formats": [
+                "html_document"
+            ],
+            "output_filename_base": "HSMR_Summary_Report"
+        }
+    },
+    "config_hash": "67cffef8aeb24457e5344a8f7381fc817abcc3c7dd5806cac75fdf49b3726470"
+}

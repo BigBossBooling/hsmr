@@ -1,0 +1,17 @@
+{
+  "file_description": "Schema for SMR Output Data",
+  "columns": [
+    {"name": "patient_id", "type": "int64", "required": true},
+    {"name": "admission_date", "type": "object"},
+    {"name": "discharge_date", "type": "object"},
+    {"name": "diagnosis_code_1", "type": "object"},
+    {"name": "discharged_alive_status", "type": "int64"},
+    {"name": "wrangled_indicator", "type": "bool"},
+    {"name": "age_group", "type": "object"},
+    {"name": "comorbidity_score", "type": "int64"},
+    {"name": "predicted_mortality_prob", "type": "float64"},
+    {"name": "smr_value", "type": "float64"}
+  ],
+  "strict_column_order": false,
+  "allow_extra_columns": false
+}

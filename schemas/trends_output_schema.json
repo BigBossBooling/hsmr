@@ -1,0 +1,11 @@
+{
+  "file_description": "Schema for Trends Output Data",
+  "columns": [
+    {"name": "time_period", "type": "object", "required": true},
+    {"name": "total_admissions", "type": "int64", "required": true},
+    {"name": "total_deaths", "type": "int64", "required": true},
+    {"name": "crude_mortality_rate", "type": "float64", "required": false}
+  ],
+  "strict_column_order": false,
+  "allow_extra_columns": false
+}
