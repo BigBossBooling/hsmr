@@ -1,1 +1,16 @@
-{"status":"PASSED"}
+{
+    "smr_output": {
+        "status": "FAILED",
+        "file": "data/processed/smr_output_2025_Q1.csv",
+        "errors": [
+            "Rule 'SMR Key Fields Integrity Hash' for 'smr_output': Subset hash check FAILED. Expected: dummy_smr_subset_hash_placeholder_123abc, Calculated: c88544201fae64fcd13886c2a0a8efc45882ac96379d061721fdc2b4aba2b520."
+        ]
+    },
+    "trends_output": {
+        "status": "FAILED",
+        "file": "data/processed/trends_output_2025_Q1.csv",
+        "errors": [
+            "Rule 'Trends Summary Integrity Hash' for 'trends_output': Subset hash check FAILED. Expected: dummy_trends_subset_hash_placeholder_456def, Calculated: b832ddd4454902b00fc822cb4c1335e814951ec3b51b7d84ce4d3d9296d72ff3."
+        ]
+    }
+}

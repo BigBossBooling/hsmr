@@ -75,8 +75,6 @@ def get_target_period_dates():
 
 
     # Conceptual actual publication date (e.g., 15th day of the 3rd month after quarter ends)
-    # This logic now uses the determined target_year and end_month of that target quarter
-    # publication_year and publication_month for the actual publication
     publication_year = target_year
     publication_month = end_month + 3
     if publication_month > 12:
@@ -86,7 +84,6 @@ def get_target_period_dates():
     conceptual_actual_publication_date = datetime.date(publication_year, publication_month, 15)
 
     # Conceptual submission deadline (e.g., 15th day of the 2nd month after quarter ends)
-    # submission_year and submission_month for the deadline
     submission_year = target_year
     submission_month = end_month + 2
     if submission_month > 12:
@@ -98,7 +95,7 @@ def get_target_period_dates():
     return {
         "year": target_year,
         "quarter": target_quarter,
-        "processing_script_run_date": current_processing_date.isoformat(), # Added for clarity
+        "processing_script_run_date": current_processing_date.isoformat(),
         "publication_reference_period": f"{target_year}_Q{target_quarter}",
         "start_date_iso": target_period_start_date.isoformat(),
         "end_date_iso": target_period_end_date.isoformat(),
@@ -108,7 +105,6 @@ def get_target_period_dates():
     }
 
 def generate_config_hash(config_data):
-    """Generates a SHA256 hash of the configuration data."""
     config_string = json.dumps(config_data, sort_keys=True)
     return hashlib.sha256(config_string.encode('utf-8')).hexdigest()
 
@@ -119,7 +115,7 @@ def main():
         date_params = get_target_period_dates()
     except ValueError as e:
         print(f"CRITICAL: Could not determine target period dates. {e}")
-        sys.exit(1) # Ensure GHA step fails if dates are fundamentally broken
+        sys.exit(1)
 
     db_connection_details_placeholder = {
         "db_server_placeholder": "your_server_name_or_DSN_env_var",
@@ -169,6 +165,10 @@ def main():
                 "output_formats": ["html_document"],
                 "output_filename_base": "HSMR_Summary_Report"
             }
+        },
+        "data_subset_hashes": { # New section
+            "smr_output_key_fields_hash": "dummy_smr_subset_hash_placeholder_123abc",
+            "trends_output_summary_hash": "dummy_trends_subset_hash_placeholder_456def"
         }
     }
 
@@ -185,14 +185,10 @@ def main():
     if os.getenv('INPUT_TARGET_YEAR') and os.getenv('INPUT_TARGET_QUARTER'):
         print(f"Based on manual override: Year {os.getenv('INPUT_TARGET_YEAR')}, Quarter {os.getenv('INPUT_TARGET_QUARTER')}")
 
-    # Output for GitHub Actions
     if os.getenv('GITHUB_OUTPUT'):
         print(f"Setting GITHUB_OUTPUT: publication_reference_period={date_params['publication_reference_period']}")
         with open(os.getenv('GITHUB_OUTPUT'), 'a') as gh_output:
             gh_output.write(f"publication_reference_period={date_params['publication_reference_period']}\n")
-    # else:
-    #     print("GITHUB_OUTPUT environment variable not found. Skipping GHA output.")
-
 
 if __name__ == "__main__":
     main()

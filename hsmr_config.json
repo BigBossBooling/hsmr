@@ -2,7 +2,7 @@
     "date_parameters": {
         "year": 2025,
         "quarter": 1,
-        "processing_script_run_date": "2025-06-19",
+        "processing_script_run_date": "2025-06-20",
         "publication_reference_period": "2025_Q1",
         "start_date_iso": "2025-01-01",
         "end_date_iso": "2025-03-31",
@@ -60,5 +60,9 @@
             "output_filename_base": "HSMR_Summary_Report"
         }
     },
-    "config_hash": "240d1a591942b2983172933c64cfbd97cd503d67b9efc9e3b160cc020df744f8"
+    "data_subset_hashes": {
+        "smr_output_key_fields_hash": "dummy_smr_subset_hash_placeholder_123abc",
+        "trends_output_summary_hash": "dummy_trends_subset_hash_placeholder_456def"
+    },
+    "config_hash": "83b8afd179677769d2f433c144d4175784937cfa141403598cd58f7f72fb5d12"
 }
