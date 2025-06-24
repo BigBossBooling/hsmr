@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package echonet.core.v3;
+
+option go_package = "github.com/your_org/digisocialblock/pkg/echonet/core/v3;corev3"; // Adjust go_package path as needed
+
+// Core Data Structures for EchoNet DLI
+
+// Enum for different types of interactions that can be recorded.
+enum InteractionType {
+  INTERACTION_TYPE_UNSPECIFIED = 0; // Default, should not be used.
+  INTERACTION_TYPE_CREATE_POST = 1;   // User creates a new post.
+  INTERACTION_TYPE_COMMENT = 2;       // User comments on content.
+  INTERACTION_TYPE_REACTION = 3;      // User reacts to content (e.g., like, upvote).
+  INTERACTION_TYPE_SHARE = 4;         // User shares/re-echoes content.
+  INTERACTION_TYPE_FOLLOW = 5;        // User follows another user.
+  INTERACTION_TYPE_MENTION = 6;       // User is mentioned.
+  // Add other specific interaction types as needed for PoP or platform features.
+}
+
+// Represents a piece of content on the DigiSocialBlock platform.
+message NexusContentObjectV1 {
+  string content_id = 1;          // Unique identifier for the content (e.g., UUID or DLI-generated hash-based ID).
+  bytes content_hash = 2;         // Cryptographic hash (e.g., SHA256) of the actual content data (which might be stored off-DLI, e.g., on IPFS).
+  int64 timestamp_created_ms = 3; // Unix timestamp in milliseconds (UTC) when the content was created/submitted by the user.
+  string author_did = 4;          // Decentralized Identifier (DID) of the content creator (e.g., "did:echonet:user_xyz").
+  string content_type = 5;        // MIME type or platform-specific content type (e.g., "text/markdown", "image/jpeg", "application/json+customtype").
+  optional string metadata_json_str = 6; // Optional: A JSON string for flexible metadata (e.g., title, tags, description, links, location for images/videos on IPFS).
+                                      // Alternatively, define specific metadata fields if structure is common.
+  // Example of specific metadata fields (consider if these are universally applicable or better in metadata_json_str):
+  // optional string title = 7;
+  // repeated string tags = 8;
+  // optional string ipfs_cid_media = 9; // If media is separate from primary content_hash object
+
+  int64 last_modified_ms = 10;    // Unix timestamp for last modification (if applicable, e.g. edits)
+  string parent_content_id = 11;  // Optional: if this content is a reply/comment to another content_id
+}
+
+// Represents a user profile and state on the DigiSocialBlock platform.
+message NexusUserObjectV1 {
+  string user_did = 1;            // Decentralized Identifier (DID) of the user (e.g., "did:echonet:user_xyz"). This is the primary key.
+  bytes profile_data_hash = 2;    // Cryptographic hash of the user's profile data (which might be stored off-DLI, e.g., on IPFS or a user-controlled data pod).
+                                  // This allows profile updates without changing user_did, while maintaining verifiability.
+  int64 reputation_score_int64 = 3; // User's reputation score, represented as an integer (e.g., scaled by a factor of 1000 if it's a decimal).
+  bytes pop_state_summary_hash = 4; // Cryptographic hash summarizing the user's current Proof-of-Engagement state or claims.
+                                   // This could be a Merkle root or hash of key PoP aggregates.
+  int64 registration_timestamp_ms = 5; // When the user DID was first registered on the platform.
+  int64 last_active_timestamp_ms = 6;  // Timestamp of the user's last recorded activity.
+  optional string public_key_pem = 7;  // User's primary public key in PEM format (if managed/referenced on DLI)
+                                       // Alternatively, this could be part of the DID document itself.
+  bool is_active = 8;                  // Flag indicating if the user account is currently active or suspended/banned.
+}
+
+// Records a specific interaction event on the platform.
+// These records are fundamental for generating Proof-of-Engagement.
+message NexusInteractionRecordV1 {
+  string interaction_id = 1;        // Unique identifier for this interaction event (e.g., UUID or DLI transaction hash).
+  InteractionType interaction_type = 2; // Type of interaction (from the enum).
+  int64 timestamp_ms = 3;           // Unix timestamp in milliseconds (UTC) of the interaction.
+  string actor_did = 4;             // DID of the user performing the interaction.
+  optional string subject_content_id = 5; // ID of the content being interacted with (e.g., post ID for a comment or like).
+  optional string target_user_did = 6;    // DID of the user being interacted with (e.g., user being followed, user whose post is commented on).
+  optional string interaction_metadata_json_str = 7; // JSON string for additional metadata specific to the interaction type.
+                                                 // e.g., for a reaction: {"reaction_type": "insightful_upvote", "staked_amount_dgt": "10.5"}
+                                                 // e.g., for a comment: {"comment_length": 150, "ipfs_cid_comment_text": "..."}
+  bytes interaction_data_hash = 8; // Hash of the core data of this interaction (e.g. hash of comment text itself if not in metadata)
+                                   // Used for PoP data structure's engagement_data_hash
+}
+
+// Represents a Proof-of-Work (PoW) attestation by a witness node.
+// This is a conceptual structure for how witnesses might attest to data or events.
+// The actual PoW mechanism for EchoNet might be more complex or different.
+message WitnessProofV1 {
+  string witness_did = 1;           // DID of the witness node providing the proof.
+  bytes attested_data_hash = 2;   // Hash of the data or event being attested to (e.g., a batch of PoP events, a state root).
+  int64 timestamp_ms = 3;           // Timestamp of when the proof was generated by the witness.
+  int64 nonce = 4;                  // Nonce found by the witness to satisfy PoW difficulty.
+  bytes previous_proof_hash = 5;    // Hash of a previous proof or block, forming a chain (if applicable).
+  string signature = 6;             // Cryptographic signature from the witness_did over the proof's content (e.g., hash of fields 1-5).
+  // Optional: Difficulty target, solution details etc.
+}

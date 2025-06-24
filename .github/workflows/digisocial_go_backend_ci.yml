@@ -1,0 +1,100 @@
+name: DigiSocialBlock Go Backend CI
+
+on:
+  push:
+    branches:
+      - main # Or your main development branch e.g., 'develop'
+    paths: # Only run if Go files, proto files, or this workflow changes
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - 'proto/**.proto'
+      - '.github/workflows/digisocial_go_backend_ci.yml'
+  pull_request:
+    branches:
+      - main # Or your main development branch
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - 'proto/**.proto'
+      - '.github/workflows/digisocial_go_backend_ci.yml'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-and-test-go:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21' # Specify your project's Go version
+
+      - name: Install protoc and protoc-gen-go
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          # Ensure GOBIN is in PATH or use full path to protoc-gen-go
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        # Note: Specific versions of protoc might be needed.
+        # Using apt-get protobuf-compiler might install an older version.
+        # For production CI, consider downloading specific protoc binary releases.
+
+      - name: Compile Protocol Buffers
+        run: |
+          # Ensure output directory exists based on go_package option in .proto files
+          # Example: mkdir -p pkg/echonet/core/v3 (if not created by protoc automatically based on go_out)
+          # The go_out path in the command must align with how Go modules are structured.
+          # Assuming 'pkg' is at the root of the module where go.mod is.
+          # The go_opt=paths=source_relative is generally preferred.
+          # It places generated files in the same directory as the .proto source if go_package is relative,
+          # or respects the full go_package path if it's an import path.
+          # Given go_package = "github.com/your_org/digisocialblock/pkg/echonet/core/v3;corev3"
+          # and assuming go.mod is for "github.com/your_org/digisocialblock",
+          # then --go_out=. should place it in pkg/echonet/core/v3/ relative to go.mod.
+          protoc --proto_path=proto \
+                 --go_out=. \
+                 --go_opt=paths=source_relative \
+                 proto/echonet_v3_core.proto
+
+          echo "Protobuf compilation complete. Checking for generated files..."
+          # This path should match the target directory derived from the go_package option
+          ls -l pkg/echonet/core/v3/
+
+      - name: Tidy Go Modules
+        run: go mod tidy
+
+      - name: Run Go Linter (golangci-lint)
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.55 # Specify desired golangci-lint version
+          # Optional: args: --config=.golangci.yml
+          # (if you have a custom config file)
+
+      - name: Run Go Security Scanner (gosec)
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          gosec ./...
+          # Add flags as needed, e.g., -fmt=sarif -out=gosec-results.sarif for SARIF output
+          # Consider failing the build on found issues: gosec -quiet ./...
+
+      - name: Run Go Unit Tests
+        run: go test -v -race -coverprofile=coverage.out ./...
+        # -v for verbose, -race for race detector, -coverprofile for coverage
+
+      - name: Calculate Code Coverage (Optional)
+        run: go tool cover -func=coverage.out
+        # This prints coverage per function.
+        # For a percentage and CI integration, you might upload coverage.out to a service like Codecov.
+
+      - name: Upload Coverage Report (Optional - Example with Codecov)
+        if: success() # Or always() if you want to upload even on failure for diagnostics
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.out
+          # token: ${{ secrets.CODECOV_TOKEN }} # If needed for private repos
+          # fail_ci_if_error: true # Optional
