@@ -1,0 +1,11 @@
+// This is an intentionally empty go.sum file.
+// In a normal Go workflow, this file is auto-generated and populated
+// by Go module commands (e.g., go get, go mod tidy, go build).
+// Due to sandbox limitations preventing these commands from running,
+// this file is created empty to satisfy basic Go tooling checks that
+// expect its presence alongside a go.mod file.
+//
+// Functionality requiring actual dependency resolution (like compilation
+// or running tests that import external packages) will likely fail
+// unless the dependencies are made available through other means
+// not reliant on standard Go module network operations within this environment.

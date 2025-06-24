@@ -25,3 +25,16 @@ data/
 *.jpg
 *.jpeg
 *.svg
+
+# Go specific
+vendor/
+*.o
+*.a
+*.exe
+*.test
+*test.out
+*~
+# Add build if you have a local build directory like 'build/' or 'bin/'
+# build/
+# bin/
+```
