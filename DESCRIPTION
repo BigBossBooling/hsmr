@@ -1,41 +1,20 @@
 Package: hsmr
-Version: 1.0.0
-Date: 2019-07-17
-Title: Reproducible Analytical Pipeline of Hospital Standardised Mortality Ratios Quarterly Publication
-Authors@R: c(person("David", "Caldwell", email = "david.caldwell@phs.scot", role = c("aut", "cre")),
-             person("Anna", "Price", email = "anna.price5@nhs.net", role = "aut"),
-             person("Jack", "Hannah", email = "jack.hannah2@phs.scot", role = "aut"),
-             person("Robyn", "Munro", email = "robyn.munro@phs.scot", role = "aut"),
-             person("Lucinda", "Lawrie", email = "lucinda.lawrie@phs.scot", role = "aut"),
-             person("Jaime", "Villacampa", email = "jaime.villacampa@phs.scot", role = "aut"))
-Description: Extracts, processes and models SMR01 and GRO Deaths data in order to produce the quarterly Hospital Standardised Mortality Ratios publication.
-Maintainer: PHS Quality Indicators team <phs.qualityindicators@phs.scot>
-Depends: R (>= 3.2.3)
-Imports: 
-    data.table, 
-    dplyr (>= 0.8.0), 
-    fuzzyjoin, 
-    gdata, 
-    ggplot2,
-    ggrepel, 
-    glue, 
-    here, 
-    httr, 
-    janitor, 
-    lubridate, 
-    magrittr, 
-    purrr, 
-    RcppBDT,
-    readr,
-    readxl, 
-    scales (>= 1.0.0), 
-    stringr,
-    testthat,
-    tibble, 
-    tidylog, 
-    tidyr, 
-    zoo
-License: What license is it under?
+Title: Hospital Standardised Mortality Ratios
+Version: 0.1.0
+Author: Data Science Team
+Maintainer: The Author <you@example.com>
+Description: A reproducible analytical pipeline for calculating Hospital
+    Standardised Mortality Ratios.
+License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Imports:
+    dplyr (>= 1.0.7),
+    here (>= 1.0.1),
+    janitor (>= 2.1.0),
+    readr (>= 2.1.2),
+    readxl (>= 1.4.0),
+    tidyr (>= 1.2.0),
+    stringr (>= 1.4.0)

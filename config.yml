@@ -1,0 +1,20 @@
+# --- Project Configuration ---
+# All paths are relative to the project root.
+
+# Data paths
+data_dir: "data"
+outputs_dir: "outputs"
+trends_dir: "outputs/trends"
+markdown_dir: "markdown"
+
+# Analysis parameters
+end_date: "2023-01-31"
+
+# Hospital and board codes
+hospital_codes:
+  - "HOS01"
+  - "HOS02"
+  - "HOS03"
+board_codes:
+  - "BOS01"
+  - "BOS02"

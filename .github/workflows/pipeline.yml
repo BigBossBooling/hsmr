@@ -1,0 +1,44 @@
+# --- CI/CD Workflow: pipeline.yml ---
+
+# Purpose: This GitHub Actions workflow automates the entire
+# analysis pipeline. It runs on every push to the main branch.
+
+name: R Pipeline Automation
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install renv
+        run: R -e 'install.packages("renv")'
+
+      - name: Restore R dependencies
+        run: R -e 'renv::restore()'
+
+      - name: Install yaml package (for config file)
+        run: R -e 'install.packages("yaml")'
+
+      - name: Run the entire pipeline
+        run: Rscript run_all.R
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: hsmr-outputs
+          path: |
+            outputs/
+            markdown/
