@@ -1,0 +1,7 @@
+{
+  "project_name": "DashAIBrowser",
+  "component": "Jules Communication Bus",
+  "status": "Active",
+  "description": "Browser interface for AI interaction.",
+  "technologies": ["Web Technologies", "Inter-Process Communication"]
+}

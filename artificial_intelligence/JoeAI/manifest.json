@@ -1,0 +1,7 @@
+{
+  "project_name": "JoeAI",
+  "versions": ["v1 Python", "v2 Refactored"],
+  "status": "Active",
+  "description": "Modular AI agent.",
+  "technologies": ["Python", "Machine Learning"]
+}

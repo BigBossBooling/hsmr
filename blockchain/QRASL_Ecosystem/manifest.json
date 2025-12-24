@@ -1,0 +1,7 @@
+{
+  "project_name": "QRASL Ecosystem",
+  "full_name": "Quantum Resistant Ledger Ecosystem",
+  "status": "Active",
+  "description": "Blockchain infrastructure resilient against quantum computing attacks.",
+  "technologies": ["Post-Quantum Cryptography"]
+}
