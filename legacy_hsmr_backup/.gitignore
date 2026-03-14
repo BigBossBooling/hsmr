@@ -1,0 +1,21 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+odbc_connect.
+testing.R
+
+# 'data' folder #
+data/
+
+# Markdown/notebook output
+*.docx
+*.doc
+*.html
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.svg
