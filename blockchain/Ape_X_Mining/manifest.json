@@ -1,0 +1,7 @@
+{
+  "project_name": "Ape-X Mining",
+  "component": "Krypton UI",
+  "status": "Active",
+  "description": "User Interface for mining operations.",
+  "technologies": ["UI/UX", "Mining Pools"]
+}

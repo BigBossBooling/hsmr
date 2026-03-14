@@ -1,0 +1,6 @@
+{
+  "project_name": "AuroraDAW",
+  "status": "Active",
+  "description": "C++ Audio Workstation.",
+  "technologies": ["C++", "Audio Processing"]
+}

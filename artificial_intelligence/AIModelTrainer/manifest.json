@@ -1,0 +1,7 @@
+{
+  "project_name": "AIModelTrainer",
+  "repository": "BigBossBoolingB/AIModelTrainer",
+  "status": "Active",
+  "description": "Training infrastructure for AI models.",
+  "technologies": ["PyTorch", "TensorFlow"]
+}
